@@ -5,5 +5,6 @@ Aodh alarm NOTIFIER ==>
 setup a Http server ==>
   such as: python -m SimpleHTTPServer 8000
         link: https://docs.python.org/2/library/simplehttpserver.html
+        
         NOTE: this case only receive the posted data, but not handle it.
   such as: 
