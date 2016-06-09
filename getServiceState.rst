@@ -17,6 +17,8 @@ the backdoor_port option in config. Backdoor_port allows user connect to
 node to debug and get running service state by telnet.
 
 Using the following code to create backdoor_server:
+
+.. Link: http://docs.openstack.org/developer/designate/gmr.html
 ::
 
   from eventlet import backdoor
@@ -25,6 +27,7 @@ Using the following code to create backdoor_server:
   eventlet.spawn(backdoor.backdoor_server, eventlet.listen(('localhost', PORT)), locals=backdoor_locals)
   
 `backdoor_locals` is a dirc <key, value>, defining functions which can be called by admin.
+
 
   
 Detailed instances is in the link:
