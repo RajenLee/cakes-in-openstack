@@ -285,14 +285,35 @@ As the common.yaml shown, ``git_user``, git_email`` and ``gerrit_user`` options 
 This account is created in gerrit, and used for CI jobs.
 
 ::
+  
+  cat ~/.ssh/id_rsa.pub|ssh -p 29418 green@10.63.243.3 gerrit create-account openzeroci --email openzeroci@zte.com.cn --full-name openzeroci --group "'VerifiedCI'" --http-password Aa888888 --ssh-key -
+
+**NOTE** 
+* The ``id_rsa.pub`` must be consistent with the ``gerrit_user_ssh_public_key`` in common.yaml, which is paired with
+``gerrit_user_ssh_private_key``.
+
+* ``--group "'VerifiedCI'"``, VerifiedCI group must be exist before run the above command to create openzeroci. If no, pls create group firstly.
+::
+  
+  ssh -p 29418 green@10.63.243.3 gerrit create-group VerifiedCI
+
+
+create ci group(optional)
+-------------------------
+If you don't like creating group by shell command, you can use the web browser.
 
 
 
-set ci account
+set ci account(optional)
 ----------------
+
+
 
 create ci project
 -----------------
+
+
+
 
 set ci project access
 ---------------------
