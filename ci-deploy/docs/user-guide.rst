@@ -229,7 +229,9 @@ Note
 ``net-id`` is the internal network of Openstack environment.
 
 * the name in diskimage, ubuntu-trusty, is the value of $IMAGE_NAME.
-
+* ``ready-script`` define which script will be run once slave node is started. So, if you want to add some configuration
+to slave node before running the jenkins job, you can modify ``configure_mirrors.sh``. It is located in ``./nodepool/script/``.
+* More introductions for nodepool.yaml configuration can be found in `this <http://docs.openstack.org/infra/nodepool/configuration.html>`_ .
 
 Jenkins
 =======
