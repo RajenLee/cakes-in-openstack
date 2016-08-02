@@ -61,7 +61,7 @@ common.yaml
 
 This repo contains a set of config files that are consumed by the openstack-infra/system-config puppet
 modules in order to deploy and configure the OpenStack Infrastructure. You need to create an account in
-GitHub and `make configuration changes <http://docs.openstack.org/infra/openstackci/third_party_ci.html#create-an-initial-project-config-repository`_ for your own CI environment. 
+GitHub and `make configuration changes <http://docs.openstack.org/infra/openstackci/third_party_ci.html#create-an-initial-project-config-repository>`_ for your own CI environment. 
 
 In the repo, the major modification is in nodepool.yaml. It will be introduced in the following section.
 
@@ -131,9 +131,15 @@ puppet command.
   sudo puppet apply --verbose /etc/puppet/manifests/site.pp
 
 * jenkins_api_key/jenkins_credentials_id
+
+This config can be found in Openstack CI `Jenkins <http://docs.openstack.org/infra/openstackci/third_party_ci.html#securing-jenkins-optional>`_ .
+
 * zuul_revision/nodepool_revision
 
+When set zuul_revision/nodepool_revision as master, during running the puppet command, it will get
+lastest version of zuul and nodepool codes from the master branch of project, respectively. 
 
+If you want to have a stable env, please select a stable branch for the zuul and nodepool.
 
 
 project-config repo (nodepool.yaml)
