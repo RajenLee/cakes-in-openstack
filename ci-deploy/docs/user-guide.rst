@@ -346,7 +346,9 @@ git push a new change::
   
 * get clone link
 
-The link for git clone with commit-msg hook can be got from here::
+The link for git clone with commit-msg hook can be got from here.
+
+.. image:: ./set_project_git_clone.png
 
 
 Test Repo
