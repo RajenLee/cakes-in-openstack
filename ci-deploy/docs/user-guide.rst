@@ -400,7 +400,40 @@ The link for git clone with commit-msg hook can be got from here.
 
 Test Repo
 =========
+Take "citest" project for instance.
 
+/etc/zuul/layout/layout.yaml
+::
+
+  # add citest job config in projects section
+  # projects:
+  - name: citest
+    check:
+      - citest-verified-flow
+    gate:
+      - citest-verified-flow
+  
+/etc/jenkins-jobs/config/projects.yaml
+::
+
+  - project:
+    name: citest
+    jobs:
+      - {name}-verified-flow
+      
+/etc/jenkins-jobs/config/citest.yaml
+::
+  
+  job-template:
+    name: {name}-verified-flow
+    builders:
+      - link-logs
+      - net-info
+      - shell: |
+          cat /etc/resolv.conf
+    publishers:
+      - test-results
+      - console-log         
 
 
 
