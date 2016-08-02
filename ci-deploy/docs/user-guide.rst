@@ -402,7 +402,7 @@ Test Repo
 =========
 Take "citest" project for instance.
 
-/etc/zuul/layout/layout.yaml
+./zuul/layout.yaml
 ::
 
   # add citest job config in projects section
@@ -413,7 +413,7 @@ Take "citest" project for instance.
     gate:
       - citest-verified-flow
   
-/etc/jenkins-jobs/config/projects.yaml
+./jenkins/jobs/projects.yaml
 ::
 
   - project:
@@ -421,7 +421,7 @@ Take "citest" project for instance.
     jobs:
       - {name}-verified-flow
       
-/etc/jenkins-jobs/config/citest.yaml
+./jenkins/jobs/citest.yaml
 ::
   
   job-template:
@@ -434,6 +434,18 @@ Take "citest" project for instance.
     publishers:
       - test-results
       - console-log         
+
+``./zuul/layout.yaml`` file will be copy into ``/etc/zuul/layout/layout.yaml``.
+
+``./jenkins/jobs/projects.yaml`` and ``./jenkins/jobs/citest.yaml`` will be copyed to 
+``/etc/jenkins-jobs/config/projects.yaml`` and ``/etc/jenkins-job/config/citest.yaml``.
+
+``layout.yaml`` contains the rules of pipelines and which jobs will be triggered for a project.
+Besides, according to the open project, such as citest, in ``projects.yaml`` and jobs of this 
+project configured in ``layout.yaml`` , zuul service will registeres these jobs' name into gearman.
+
+``
+
 
 
 
