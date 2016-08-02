@@ -1,5 +1,5 @@
 
-User Guide for CI Deploy 
+Deploy CI master node 
 ========================
 
 This instruction will guide user to deploy a (Openstack) CI environment. The workflow of
