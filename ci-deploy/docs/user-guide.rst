@@ -145,21 +145,119 @@ If you want to have a stable env, please select a stable branch for the zuul and
 project-config repo (nodepool.yaml)
 -----------------------------------
 
+``project-config`` repo contains the configuration of CI modules, including Gerrit, Zuul, Jenkins,
+Nodepool and so on. The role of each module is introduced in `official project-config <https://github.com/openstack-infra/project-config>`_.
+
+To config an available project-config repo, the above modules need to be modified. While, the major work is in `nodepool.yaml <https://github.com/openstack-infra/project-config/blob/master/nodepool/nodepool.yaml>`_ file in Nodepool module(dir).
+
+The following is nodepool.yaml file used for my CI environment.
+::
+
+  script-dir: /etc/nodepool/scripts
+  elements-dir: /etc/nodepool/elements
+  images-dir: /opt/nodepool_dib
+  
+  cron:
+    cleanup: '*/1 * * * *'
+    check: '*/15 * * * *'
+    image-update: '14 14 * * *'
+  
+  zmq-publishers:
+    - tcp://localhost:8888
+  
+  gearman-servers:
+    - host: 127.0.0.1
+  
+  labels:
+    - name: ubuntu-trusty
+      image: ubuntu-trusty
+      ready-script: configure_mirror.sh
+      min-ready: 5
+      providers:
+        - name: zte-RegionOne
+  
+  providers:
+    - name: zte-RegionOne
+      region-name: 'RegionOne'
+      username: 'ciuser'
+      password: 'ciuser'
+      auth-url: 'http://172.20.0.12:5000/v2.0'
+      project-name: 'ciuser'
+      api-timeout: 60
+      boot-timeout: 1500
+      max-servers: 40
+      rate: 0.001
+      image-type: qcow2
+      networks:
+        - net-id: add16b70-14fc-402f-bd52-459cab1fd2e6
+      images:
+        - name: ubuntu-trusty
+          min-ram: 8192
+          diskimage: ubuntu-trusty
+          username: jenkins
+          private-key: /home/nodepool/.ssh/id_rsa
+          # name-filter: 'Performance'
+          # config-drive: true
+  
+  targets:
+    - name: jenkins1
+    
+  diskimages:
+    - name: ubuntu-trusty
+      elements:
+        - ubuntu-minimal
+        - vm
+        - simple-init
+        - openstack-repos
+        - nodepool-base
+        - node-devstack
+        - cache-bindep
+        - growroot
+        - infra-package-needs
+      release: trusty
+      env-vars:
+        DIB_DISTRIBUTION_MIRROR: http://mirrors.tuna.tsinghua.edu.cn/ubuntu/
+        TMPDIR: /opt/dib_tmp
+        DIB_IMAGE_CACHE: /opt/dib_cache
+        DIB_APT_LOCAL_CACHE: '0'
+        DIB_DISABLE_APT_CLEANUP: '1'
+
+
+Note: ``username``,``password``, ``auth-url`` and ``project-name`` is the info of an available OpenStack environment.
+``net-id`` is the internal network of Openstack environment.
+
 
 Jenkins
 =======
+
+Jenkins configuration has been introduced in detail in `this <http://docs.openstack.org/infra/openstackci/third_party_ci.html#securing-jenkins-optional>`_. Please follow it.
+
+pruning jenkins jobs
+--------------------
+
+
+
 
 
 Gerrit
 ========
 
 
+
+
 Test Repo
 =========
 
 
+
 Common Command
 ==============
+
+* puppet command
+
+* nodepool command
+
+* jenkins command
 
 
 FAQ
