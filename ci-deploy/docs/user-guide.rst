@@ -44,10 +44,16 @@ Note: In this instruction, it is dafault that, a) don't need to add proxy to hos
 connect to foreigin websites. Otherwise, there will be so many bugs caused by an unreachable network, and these
 bugs are not listed in the following.
 
-
+* database update failed
 * nodepool image-build failed
 * nodepool \** cmd no valid
 * ci slave node created failed
 * slave node can not be registered in jenkins
 * slave node is outline in jenkins
-* jjb 
+* job (such as dsvm-tempest-full) failed
+* zuul merge failed
+* /etc/resolv.conf is repeatly overridden
+* update ready-script failed
+* gerrit can not receive the result of 'verified -1'
+* git review failed
+* jenkins-jobs update failed
