@@ -223,7 +223,7 @@ The following is nodepool.yaml file used for my CI environment.
         DIB_DISABLE_APT_CLEANUP: '1'
 
 
-Note: ``username``,``password``, ``auth-url`` and ``project-name`` is the info of an available OpenStack environment.
+Note: ``username``, ``password``, ``auth-url`` and ``project-name`` is the info of an available OpenStack environment.
 ``net-id`` is the internal network of Openstack environment.
 
 
