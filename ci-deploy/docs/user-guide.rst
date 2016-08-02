@@ -9,6 +9,8 @@ Now, according to the `Openstack Third-part CI <http://docs.openstack.org/infra/
 
 Before run the above script, serveral files need to be prepared in advance.
 
+Assuming: the CI master is deployed in a VM.
+
 common.yaml
 -----------------------------
 
@@ -17,11 +19,35 @@ project-config repo (nodepool.yaml)
 -----------------------------------
 
 
+Jenkins
+=======
+
+
+Gerrit
+========
+
+
+Test Repo
+=========
+
+
+Common Command
+==============
+
 
 FAQ
 ====
 
 During deploying CI master, series of bugs will be occurred. In this guide, it will summary the common problems.
 
+Note: In this instruction, it is dafault that, a) don't need to add proxy to host, b) no limited for host to
+connect to foreigin websites. Otherwise, there will be so many bugs caused by an unreachable network, and these
+bugs are not listed in the following.
+
+
 * nodepool image-build failed
-* 
+* nodepool \** cmd no valid
+* ci slave node created failed
+* slave node can not be registered in jenkins
+* slave node is outline in jenkins
+* jjb 
