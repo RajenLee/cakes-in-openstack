@@ -15,6 +15,7 @@ common.yaml
 -----------------------------
 
 ::
+
   # See parameter documetation inside ../manifests/single_node_ci.pp
   # Fields commented out have reasonable default values
   
