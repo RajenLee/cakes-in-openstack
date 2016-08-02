@@ -20,7 +20,7 @@ common.yaml
   # Fields commented out have reasonable default values
   
   #vhost_name:
-  project_config_repo: https://github.com/dongwenjuan/project-config 
+  project_config_repo: https://github.com/USERNAME/project-config 
   #serveradmin:
   jenkins_username: jenkins
   jenkins_password: jenkins
@@ -28,7 +28,7 @@ common.yaml
                            -----BEGIN RSA PRIVATE KEY-----
                            ...OMIT...
                            -----END RSA PRIVATE KEY-----
-  jenkins_ssh_public_key: AAAAB3NzaC1yc2EAAAADAQABAAABAQDHaEP31qpXO1DZVoVDvirS8gYNkiDxWyJLSx5nNB58WKs11/aLX4HzP0Y+WcIzHholnynGcBbpG/9eyUpbd2wsBS8tJtJcCcjHBrJ/bvfMjlUyR7uhpU7Pk1FgqyCvY7uaGJThhMVijQ59BY8E5YQIoZu+DnejVqAMyEobE0tcSwIKurRbEajyvrx1/f/o+feIy5AbPjIVqKCoIjfgrkFbicYo0LB+Hd/zEI3SukyU4KqHHHlyZ6+iGklF8chZJPnJM9QhQpGVTw93C13jW2DsWzz5CtOUgRbB1GQxzEC/w3GJ5KvtCKeEAiAvoWqH5SspUhbRpzfCYvvhRzbTRbDL
+  jenkins_ssh_public_key: AAAAB3NzaC1yc2EAAAADAQABAAABAQDHa...C/w3GJ5KvtCKeEAiAvoWqH5SspUhbRpzfCYvvhRzbTRbDL
   gerrit_server: 10.63.243.3
   #gerrit_ssh_host_key:
   gerrit_user: openzeroci
@@ -36,7 +36,7 @@ common.yaml
                                -----BEGIN RSA PRIVATE KEY-----
                                ...OMIT...
                                -----END RSA PRIVATE KEY-----
-  gerrit_user_ssh_public_key: AAAAB3NzaC1yc2EAAAADAQABAAABAQDHaEP31qpXO1DZVoVDvirS8gYNkiDxWyJLSx5nNB58WKs11/aLX4HzP0Y+WcIzHholnynGcBbpG/9eyUpbd2wsBS8tJtJcCcjHBrJ/bvfMjlUyR7uhpU7Pk1FgqyCvY7uaGJThhMVijQ59BY8E5YQIoZu+DnejVqAMyEobE0tcSwIKurRbEajyvrx1/f/o+feIy5AbPjIVqKCoIjfgrkFbicYo0LB+Hd/zEI3SukyU4KqHHHlyZ6+iGklF8chZJPnJM9QhQpGVTw93C13jW2DsWzz5CtOUgRbB1GQxzEC/w3GJ5KvtCKeEAiAvoWqH5SspUhbRpzfCYvvhRzbTRbDL
+  gerrit_user_ssh_public_key: AAAAB3NzaC1yc2EAAAADAQABAAABAQDHa...C/w3GJ5KvtCKeEAiAvoWqH5SspUhbRpzfCYvvhRzbTRbDL
   git_email: openzeroci@zte.com.cn 
   git_name: openzeroci
   log_server: 192.168.122.252
@@ -57,7 +57,26 @@ common.yaml
   nodepool_git_source_repo: https://git.openstack.org/openstack-infra/nodepool
 
 
-* 
+* project_config_repo
+
+This repo contains a set of config files that are consumed by the openstack-infra/system-config puppet
+modules in order to deploy and configure the OpenStack Infrastructure. You need to create an account in
+GitHub and `make configuration changes <http://docs.openstack.org/infra/openstackci/third_party_ci.html#create-an-initial-project-config-repository`_ for your own CI environment. 
+
+The major file is nodepool.yaml. It will be introduced in the following section.
+
+* jenkins_username/jenkins_password
+
+
+
+* jenkins_ssh_private_key
+* jenkins_ssh_public_key
+* git_name/git_email
+* gerrit_user
+* jenkins_api_key/jenkins_credentials_id
+* zuul_revision/nodepool_revision
+
+
 
 
 project-config repo (nodepool.yaml)
