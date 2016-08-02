@@ -323,6 +323,9 @@ set ci project access
 
 * create master branch for "ci_test" project
 
+.. image:: /ci-deploy/docs/set_project_branch.JPG
+  :name: set_project_branch
+  :width: 80%
 
 * config "ci_test" jenkins jobs
 
@@ -349,7 +352,8 @@ git push a new change::
 The link for git clone with commit-msg hook can be got from here.
 
 .. image:: /ci-deploy/docs/set_project_git_clone.JPG
-  :width: 100%
+  :name: set_project_git_clone
+  :width: 80%
 
 Test Repo
 =========
