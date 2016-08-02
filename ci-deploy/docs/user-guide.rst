@@ -1,6 +1,6 @@
 
-CI Deploy User Guide
-====================
+User Guide for CI Deploy 
+========================
 
 This instruction will guide user to deploy a (Openstack) CI environment. The workflow of
 deploying CI has been introduced in `Openstack Third-part CI <http://docs.openstack.org/infra/openstackci/third_party_ci.html>`_ . Please read it.
@@ -232,15 +232,72 @@ Jenkins
 
 Jenkins configuration has been introduced in detail in `this <http://docs.openstack.org/infra/openstackci/third_party_ci.html#securing-jenkins-optional>`_. Please follow it.
 
-pruning jenkins jobs
+prune jenkins jobs
 --------------------
 
+If use the jenkins configuration in official, there will be more than six thousand jenkins jobs registered in Jenkins.
+Most of them are useless for our CI test. An operation of pruning will be needed.
 
+Firstly, delete all of useless projects in ``./jenkins/jobs/projects.yaml``, only reserve your own project.
+Secondly, run the ``jenkins-jobs update`` command.
+::
 
+  jenkins-jobs --conf /etc/jenkins-jobs/jenkins-jobs.ini update --delete-old /etc/jenkins-jobs/config/
+  
+**TIP**
+It will take a very, and very, long time to prune jenkins jobs, if there is too many jobs in original.
+To save time, you can first ``delete-all`` jobs, and then ``update`` jobs.
+::
+
+  jenkins-jobs delete-all
+  jenkins-jobs --conf /etc/jenkins_jobs/jenkins_jobs.ini update /etc/jenkins_jobs/config
 
 
 Gerrit
 ========
+
+Firstly, you need a healthy gerrit server, and an available account with administrator role.
+
+Assuming: gerrit server is 10.63.243.3, account is green.
+
+Test gerrit
+::
+
+  opnfv@cimaster:~$ ssh -p 29418 green@10.63.243.3
+  
+    ****    Welcome to Gerrit Code Review    ****
+  
+    Hi green, you have successfully connected over SSH.
+  
+    Unfortunately, interactive shells are disabled.
+    To clone a hosted Git repository, use:
+  
+    git clone ssh://green@10.63.243.3:29418/REPOSITORY_NAME.git
+  
+  Connection to 10.63.243.3 closed.
+  
+As shown above, the gerrit server and account is OK.
+
+create ci account
+-----------------
+
+As the common.yaml shown, ``git_user``, git_email`` and ``gerrit_user`` options need to fill an account.
+This account is created in gerrit, and used for CI jobs.
+
+::
+
+
+
+set ci account
+----------------
+
+create ci project
+-----------------
+
+set ci project access
+---------------------
+
+
 
 
 
