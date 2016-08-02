@@ -289,6 +289,7 @@ This account is created in gerrit, and used for CI jobs.
   cat ~/.ssh/id_rsa.pub|ssh -p 29418 green@10.63.243.3 gerrit create-account openzeroci --email openzeroci@zte.com.cn --full-name openzeroci --group "'VerifiedCI'" --http-password Aa888888 --ssh-key -
 
 **NOTE** 
+
 * The ``id_rsa.pub`` must be consistent with the ``gerrit_user_ssh_public_key`` in common.yaml, which is paired with
 ``gerrit_user_ssh_private_key``.
 
@@ -312,19 +313,45 @@ set ci account(optional)
 create ci project
 -----------------
 
+::
 
+  ssh -p 29418 green@10.63.243.3 gerrit create-project ci_test.git
 
 
 set ci project access
 ---------------------
 
+* create master branch for "ci_test" project
 
 
+* config "ci_test" jenkins jobs
 
+Will be introduced in detailed in Test Repo Section.
+
+* trigger jobs (push a new change/patchset)
+
+A new change, as well as patchset, can trigger jenkins job. If there is no open change for "ci_test" project,
+you should git clone the "ci_test" project with commit-msg hook and then git push a new change. Otherwise, you
+can add a new patchset of change to trigger jobs.
+
+git push a new change::
+
+  git clone ssh://green@10.63.243.3:29418/ci_test && scp -p -P 29418 green@10.63.243.3:hooks/commit-msg ci_test/.git/hooks/
+  cd ci_test
+  git remote add gerrit ssh://green@10.63.243.3:29418/ci_test
+  touch test.file
+  git add test.file
+  git commit ## add comment in commit
+  git review
+  
+* get clone link
+
+The link for git clone with commit-msg hook can be got from here::
 
 
 Test Repo
 =========
+
 
 
 
@@ -333,10 +360,26 @@ Common Command
 
 * puppet command
 
+::
+  sudo puppet apply --verbose /etc/puppet/manifests/site.pp
+
 * nodepool command
+
+::
+
+  # build image
+  nodepool image-build $IMAGE_NAME
+  # update image
+  nodepool image-update all $IMAGE_NAME
+  # upload image to OpenStack env
+  nodepool image-upload all #IMAGE_NAME
 
 * jenkins command
 
+::
+  
+  jenkins-jobs --conf /etc/jenkins_jobs/jenkins_jobs.ini update [--delete-old] /etc/jenkins_jobs/config
+  jenkins-jobs delete-all
 
 FAQ
 ====
