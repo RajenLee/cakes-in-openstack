@@ -1,0 +1,87 @@
+# See parameter documetation inside ../manifests/single_node_ci.pp
+# Fields commented out have reasonable default values
+
+#vhost_name:
+project_config_repo: https://github.com/dongwenjuan/project-config 
+#serveradmin:
+jenkins_username: jenkins
+jenkins_password: jenkins
+jenkins_ssh_private_key: | 
+                         -----BEGIN RSA PRIVATE KEY-----
+                         MIIEowIBAAKCAQEAx2hD99aqVztQ2VaFQ74q0vIGDZIg8VsiS0seZzQefFirNdf2
+                         i1+B8z9GPlnCMx4aJZ8pxnAW6Rv/XslKW3dsLAUvLSbSXAnIxwayf273zI5VMke7
+                         oaVOz5NRYKsgr2O7mhiU4YTFYo0OfQWPBOWECKGbvg53o1agDMhKGxNLXEsCCrq0
+                         WxGo8r68df3/6Pn3iMuQGz4yFaigqCI34K5BW4nGKNCwfh3f8xCN0rpMlOCqhxx5
+                         cmevohpJRfHIWST5yTPUIUKRlU8Pdwtd41tg7Fs8+QrTlIEWwdRkMcxAv8NxieSr
+                         7QinhAIgL6Fqh+UrKVIW0ac3wmL74Uc200WwywIDAQABAoIBAHCmD1eQVpSG9sqA
+                         3TIC2TBn91FtTtzqTfpZCmjlAZ/fe4EkaqwbnU7sXONWU6YLCFxeiPwIUHkKDv7e
+                         GfqIAXzwxNDuEIJcKKd+uhHRf314ntqTuYS83UPYhm1k30cVwWJxJpIsLlHZO+kW
+                         3c+3VRqHKXN5us50XmA6OdsH0FfnLItzmzgllsYVP6bwlCrM20c8QNJvaSZrBZoF
+                         +x0aZE7iXrFBZPv6TxD1teI00Lr9k6+XsDC84m4DKFYKlK53RC9nQSp1ldvmMglK
+                         Gzn/YIOpD8nL5X2fJZ+lP7eWPGhpv+B8WRqJ0NLld8teprorPBGl89vUvjKg2bGr
+                         1tIE64ECgYEA4//WqDlSoUAzMO85W7Fb+ZYCFQrO0kwMjtx5XC44hi2a2k+MOMQO
+                         Mw5l3gS4GGkmMULEUXuXzNy6YMci4v6KlozHrNzz8A43kmYNJEFA14w8cd/SO+JH
+                         MQpnSC5nGXKUfzKHE1/cxd5KchampQf70ZI3e7wRW1PhvkhWVtkenUECgYEA3+WC
+                         Yzdc1gn1ptZ/wBgpkenpclVL0K1D8w9LXVpCqfI/nipgFwX0PqiSxShbbG+5g8oz
+                         sJ1kQ/h0ryhuawp2hh9gxl/NKM8UWYkj+bMtuJ2rlfQnaicl4n0jB9Sjh8URZ8cO
+                         UNHpA7l9xbLDuv2c2E7zIHDxsaX5PdtIc7yWLwsCgYBuoHlQIJg2Q4dTLBABrJn7
+                         DU0vVpIpudqyCsob7xVgDYrAeK6J8J8PKOJGirWkqohsiH/nJXfvX/5S7OzBhU5L
+                         ZD2SY5c9GDjgoQGpYLwMmi/N9RL2GYH/ipO4k0NVNqJU4Xhm7zGZFJW8q77p/miy
+                         NCcVs5gcXyP+huzVsP3IwQKBgQC4a7WQv+NqMl3zhK9JrR1goQm3MWb3hiB4Ltrn
+                         FBfhIDcissjfbfoXOodaermDgiuO0JjvG1WhXx/Nv0HkTYP/Sg1OmU7GFHwwm/PU
+                         E7DPZqAVLjzhBUoBWw3lv1LL3JlPn/i8vYpvlPRySaNLfOcajT1aNW3/5DR+rQbq
+                         viX+rQKBgEbhVrM4LVmnglxaJ80fAq59qjgZwJcQG9xTrFkixjbYAu+zH0Az4RdW
+                         0Hxb77XbuKkKameAmdsV7gee2DC1YwCrIXCxMOa0nQfuGw4BPmEgSrU4YnOI0y1m
+                         zXTg0W8lo/QrnUge4mfRDVlVb9mwlawqJQlYPnydYMX9yhnGvdmj
+                         -----END RSA PRIVATE KEY-----
+jenkins_ssh_public_key: AAAAB3NzaC1yc2EAAAADAQABAAABAQDHaEP31qpXO1DZVoVDvirS8gYNkiDxWyJLSx5nNB58WKs11/aLX4HzP0Y+WcIzHholnynGcBbpG/9eyUpbd2wsBS8tJtJcCcjHBrJ/bvfMjlUyR7uhpU7Pk1FgqyCvY7uaGJThhMVijQ59BY8E5YQIoZu+DnejVqAMyEobE0tcSwIKurRbEajyvrx1/f/o+feIy5AbPjIVqKCoIjfgrkFbicYo0LB+Hd/zEI3SukyU4KqHHHlyZ6+iGklF8chZJPnJM9QhQpGVTw93C13jW2DsWzz5CtOUgRbB1GQxzEC/w3GJ5KvtCKeEAiAvoWqH5SspUhbRpzfCYvvhRzbTRbDL
+gerrit_server: 10.63.243.3
+#gerrit_ssh_host_key:
+gerrit_user: openzeroci
+gerrit_user_ssh_private_key: |
+                             -----BEGIN RSA PRIVATE KEY-----
+                             MIIEowIBAAKCAQEAx2hD99aqVztQ2VaFQ74q0vIGDZIg8VsiS0seZzQefFirNdf2
+                             i1+B8z9GPlnCMx4aJZ8pxnAW6Rv/XslKW3dsLAUvLSbSXAnIxwayf273zI5VMke7
+                             oaVOz5NRYKsgr2O7mhiU4YTFYo0OfQWPBOWECKGbvg53o1agDMhKGxNLXEsCCrq0
+                             WxGo8r68df3/6Pn3iMuQGz4yFaigqCI34K5BW4nGKNCwfh3f8xCN0rpMlOCqhxx5
+                             cmevohpJRfHIWST5yTPUIUKRlU8Pdwtd41tg7Fs8+QrTlIEWwdRkMcxAv8NxieSr
+                             7QinhAIgL6Fqh+UrKVIW0ac3wmL74Uc200WwywIDAQABAoIBAHCmD1eQVpSG9sqA
+                             3TIC2TBn91FtTtzqTfpZCmjlAZ/fe4EkaqwbnU7sXONWU6YLCFxeiPwIUHkKDv7e
+                             GfqIAXzwxNDuEIJcKKd+uhHRf314ntqTuYS83UPYhm1k30cVwWJxJpIsLlHZO+kW
+                             3c+3VRqHKXN5us50XmA6OdsH0FfnLItzmzgllsYVP6bwlCrM20c8QNJvaSZrBZoF
+                             +x0aZE7iXrFBZPv6TxD1teI00Lr9k6+XsDC84m4DKFYKlK53RC9nQSp1ldvmMglK
+                             Gzn/YIOpD8nL5X2fJZ+lP7eWPGhpv+B8WRqJ0NLld8teprorPBGl89vUvjKg2bGr
+                             1tIE64ECgYEA4//WqDlSoUAzMO85W7Fb+ZYCFQrO0kwMjtx5XC44hi2a2k+MOMQO
+                             Mw5l3gS4GGkmMULEUXuXzNy6YMci4v6KlozHrNzz8A43kmYNJEFA14w8cd/SO+JH
+                             MQpnSC5nGXKUfzKHE1/cxd5KchampQf70ZI3e7wRW1PhvkhWVtkenUECgYEA3+WC
+                             Yzdc1gn1ptZ/wBgpkenpclVL0K1D8w9LXVpCqfI/nipgFwX0PqiSxShbbG+5g8oz
+                             sJ1kQ/h0ryhuawp2hh9gxl/NKM8UWYkj+bMtuJ2rlfQnaicl4n0jB9Sjh8URZ8cO
+                             UNHpA7l9xbLDuv2c2E7zIHDxsaX5PdtIc7yWLwsCgYBuoHlQIJg2Q4dTLBABrJn7
+                             DU0vVpIpudqyCsob7xVgDYrAeK6J8J8PKOJGirWkqohsiH/nJXfvX/5S7OzBhU5L
+                             ZD2SY5c9GDjgoQGpYLwMmi/N9RL2GYH/ipO4k0NVNqJU4Xhm7zGZFJW8q77p/miy
+                             NCcVs5gcXyP+huzVsP3IwQKBgQC4a7WQv+NqMl3zhK9JrR1goQm3MWb3hiB4Ltrn
+                             FBfhIDcissjfbfoXOodaermDgiuO0JjvG1WhXx/Nv0HkTYP/Sg1OmU7GFHwwm/PU
+                             E7DPZqAVLjzhBUoBWw3lv1LL3JlPn/i8vYpvlPRySaNLfOcajT1aNW3/5DR+rQbq
+                             viX+rQKBgEbhVrM4LVmnglxaJ80fAq59qjgZwJcQG9xTrFkixjbYAu+zH0Az4RdW
+                             0Hxb77XbuKkKameAmdsV7gee2DC1YwCrIXCxMOa0nQfuGw4BPmEgSrU4YnOI0y1m
+                             zXTg0W8lo/QrnUge4mfRDVlVb9mwlawqJQlYPnydYMX9yhnGvdmj
+                             -----END RSA PRIVATE KEY-----
+gerrit_user_ssh_public_key: AAAAB3NzaC1yc2EAAAADAQABAAABAQDHaEP31qpXO1DZVoVDvirS8gYNkiDxWyJLSx5nNB58WKs11/aLX4HzP0Y+WcIzHholnynGcBbpG/9eyUpbd2wsBS8tJtJcCcjHBrJ/bvfMjlUyR7uhpU7Pk1FgqyCvY7uaGJThhMVijQ59BY8E5YQIoZu+DnejVqAMyEobE0tcSwIKurRbEajyvrx1/f/o+feIy5AbPjIVqKCoIjfgrkFbicYo0LB+Hd/zEI3SukyU4KqHHHlyZ6+iGklF8chZJPnJM9QhQpGVTw93C13jW2DsWzz5CtOUgRbB1GQxzEC/w3GJ5KvtCKeEAiAvoWqH5SspUhbRpzfCYvvhRzbTRbDL
+git_email: openzeroci@zte.com.cn 
+git_name: openzeroci
+log_server: 192.168.122.252
+#smtp_host:
+#smtp_default_from:
+#smtp_default_to:
+zuul_revision: master
+zuul_git_source_repo: https://git.openstack.org/openstack-infra/zuul
+oscc_file_contents: |
+                    # Do Not Edit - Generated & Managed by Puppet
+                    #
+mysql_root_password: root123 
+mysql_nodepool_password: root123 
+#nodepool_jenkins_target: jenkins1
+jenkins_api_key: fd11cfaebab8659d7f8a3e7cb0649a6d
+jenkins_credentials_id: 0e779e44-eb45-4266-864c-d729ab16c15a
+nodepool_revision: master
+nodepool_git_source_repo: https://git.openstack.org/openstack-infra/nodepool
