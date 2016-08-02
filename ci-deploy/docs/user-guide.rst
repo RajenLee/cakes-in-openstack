@@ -223,8 +223,12 @@ The following is nodepool.yaml file used for my CI environment.
         DIB_DISABLE_APT_CLEANUP: '1'
 
 
-Note: ``username``, ``password``, ``auth-url`` and ``project-name`` is the info of an available OpenStack environment.
+Note
+
+* ``username``, ``password``, ``auth-url`` and ``project-name`` is the info of an available OpenStack environment.
 ``net-id`` is the internal network of Openstack environment.
+
+* the name in diskimage, ubuntu-trusty, is the value of $IMAGE_NAME.
 
 
 Jenkins
@@ -240,6 +244,7 @@ Most of them are useless for our CI test. An operation of pruning will be needed
 
 Firstly, delete all of useless projects in ``./jenkins/jobs/projects.yaml``, only reserve your own project.
 Secondly, run the ``jenkins-jobs update`` command.
+
 ::
 
   jenkins-jobs --conf /etc/jenkins-jobs/jenkins-jobs.ini update --delete-old /etc/jenkins-jobs/config/
@@ -303,11 +308,19 @@ create ci group(optional)
 -------------------------
 If you don't like creating group by shell command, you can use the web browser.
 
+.. image:: /ci-deploy/docs/create_verifiedci_group.JPG
+  :name: create_verifiedci_group
+  :width: 80%
 
 
 set ci account(optional)
 ----------------
 
+Join the openstackci people into VerifiedCI group.
+
+.. image:: /ci-deploy/docs/add_account_in_verifiedci_group.JPG
+  :name: add_account_in_verifiedci_group.JPG
+  :width: 80%
 
 
 create ci project
@@ -325,6 +338,19 @@ set ci project access
 
 .. image:: /ci-deploy/docs/set_project_branch.JPG
   :name: set_project_branch
+  :width: 80%
+
+* config "ci_test" access
+
+In general, the following access should be configed for project.
+::
+
+  Core-Review -2,+2
+  Core-Review -1,+1
+  Verified -1,+1
+  
+.. image:: /ci-deploy/docs/set_project_access.JPG
+  :name: set_project_access
   :width: 80%
 
 * config "ci_test" jenkins jobs
@@ -347,8 +373,6 @@ git push a new change::
   git commit ## add comment in commit
   git review
   
-* get clone link
-
 The link for git clone with commit-msg hook can be got from here.
 
 .. image:: /ci-deploy/docs/set_project_git_clone.JPG
