@@ -348,7 +348,7 @@ git push a new change::
 
 The link for git clone with commit-msg hook can be got from here.
 
-.. image:: /ci-deploy/docs/set_project_git_clone.png
+.. image:: /ci-deploy/docs/set_project_git_clone.JPG
   :width: 100%
 
 Test Repo
