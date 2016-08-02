@@ -75,12 +75,61 @@ For all of the private_key in common.yaml, the content of private key must be ve
 
 * jenkins_ssh_public_key
 
-In general, a public key is consistent of three part: key_type, main body of key, and annotation.
+In general, a public key is consist of three part: key_type, main body of key, and annotation.
 
-But, for ``jenkins_ssh_public_key``, PLEASE ONLY fill with main body of public key, without key_type and annotation.
+But, for ``jenkins_ssh_public_key``, please **ONLY** fill with main body of public key, without key_type and annotation.
 
-* git_name/git_email
-* gerrit_user
+* git_name/git_email/gerrit_server
+
+
+``git_name`` and ``git_email`` will be used to zuul merger. ``gerrit_server`` will define which gerrit server zuul will
+monitor.
+
+These options will be written into zuul config: ``/etc/zuul/zuul.conf``.
+
+::
+
+  # /etc/zuul/zuul.conf
+  [gearman]
+  server=localhost
+  
+  [gearman_server]
+  start=true
+  log_config=/etc/zuul/gearman-logging.conf
+  
+  [gerrit]
+  server=10.63.243.3
+  user=openzeroci
+  sshkey=/var/lib/zuul/ssh/id_rsa
+  
+  [zuul]
+  layout_config=/etc/zuul/layout/layout.yaml
+  log_config=/etc/zuul/logging.conf
+  state_dir=/var/lib/zuul
+  url_pattern=http://192.168.122.252/{build.parameters[LOG_PATH]}
+  status_url=http://cimaster
+  job_name_in_report=true
+  
+  [merger]
+  git_dir=/var/lib/zuul/git
+  zuul_url=http://cimaster/p/
+  log_config=/etc/zuul/merger-logging.conf
+  git_user_email=openzeroci@zte.com.cn
+  git_user_name=openzeroci
+  
+  
+  [smtp]
+  server=localhost
+  port=25
+  default_from=zuul@cimaster
+  default_to=zuul.reports@cimaster
+
+So, if you want to modify the zuul config, please first modify the common.yaml file, and then run the
+puppet command.
+::
+
+  sudo puppet apply --verbose /etc/puppet/manifests/site.pp
+
 * jenkins_api_key/jenkins_credentials_id
 * zuul_revision/nodepool_revision
 
