@@ -304,7 +304,7 @@ This account is created in gerrit, and used for CI jobs.
   ssh -p 29418 green@10.63.243.3 gerrit create-group VerifiedCI
 
 
-create ci group(optional)
+create gerrit group(optional)
 -------------------------
 If you don't like creating group by shell command, you can use the web browser.
 
@@ -313,7 +313,7 @@ If you don't like creating group by shell command, you can use the web browser.
   :width: 80%
 
 
-set ci account(optional)
+set gerrit account(optional)
 ----------------
 
 Join the openstackci people into VerifiedCI group.
@@ -323,7 +323,7 @@ Join the openstackci people into VerifiedCI group.
   :width: 80%
 
 
-create ci project
+create gerrit project
 -----------------
 
 ::
@@ -331,7 +331,7 @@ create ci project
   ssh -p 29418 green@10.63.243.3 gerrit create-project ci_test.git
 
 
-set ci project access
+set gerrit project access
 ---------------------
 
 * create master branch for "ci_test" project
@@ -389,8 +389,8 @@ Common Command
 ==============
 
 * puppet command
-
 ::
+
   sudo puppet apply --verbose /etc/puppet/manifests/site.pp
 
 * nodepool command
