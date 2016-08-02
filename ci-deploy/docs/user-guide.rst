@@ -63,14 +63,22 @@ This repo contains a set of config files that are consumed by the openstack-infr
 modules in order to deploy and configure the OpenStack Infrastructure. You need to create an account in
 GitHub and `make configuration changes <http://docs.openstack.org/infra/openstackci/third_party_ci.html#create-an-initial-project-config-repository`_ for your own CI environment. 
 
-The major file is nodepool.yaml. It will be introduced in the following section.
+In the repo, the major modification is in nodepool.yaml. It will be introduced in the following section.
 
 * jenkins_username/jenkins_password
 
-
+The username and password for Jenkins. They will be written into the jenkins config: ``/etc/jenkins_jobs/jenkins_jobs.ini``.
 
 * jenkins_ssh_private_key
+
+For all of the private_key in common.yaml, the content of private key must be vertical alignment with the vertical bar.
+
 * jenkins_ssh_public_key
+
+In general, a public key is consistent of three part: key_type, main body of key, and annotation.
+
+But, for ``jenkins_ssh_public_key``, PLEASE ONLY fill with main body of public key, without key_type and annotation.
+
 * git_name/git_email
 * gerrit_user
 * jenkins_api_key/jenkins_credentials_id
