@@ -531,25 +531,96 @@ connect to foreigin websites. Otherwise, there will be so many bugs caused by an
 bugs are not listed in the following.
 
 * database update failed
+
+  * Description : the table structure in nodepool database is not match with model class in nodepool code.
+  * Troubleshooting
+  Nodepool code has been updated and database structure is changed.
+  
+  * Solution
+  Delete the nodepool database in mysql, and create a new one. These tables in nodepool database will be create
+  automatically.
+  ::
+  
+    mysql> create database nodepool;
+    mysql> GRANT ALL ON nodepool.* TO 'nodepool'@'localhost';
+    mysql> flush privileges;
+  
 * nodepool image-build failed
+  
+  * NOTE
+  Most errors for image build failed, is caused by network. PLEASE MAKE SURE NETWORK IS NOT LIMITED.
+  
+
 * nodepool \** cmd no valid
 
   * Description : all nodepool cmd is unavailable, and no logs
+  
   * Troubleshooting
   Before nodepool run its cmd, the job corresponding to the cmd must be registered. It can be checked used by gearman.
   If there are no registered jobs in Gearman, maybe, the reason is zuul service failed.
+  
   * Solution
   check registered jobs : ``echo status| nc 127.0.0.1 4730 -w 1 ``
   restart zuul service: ``service zuul-merger restart``; ``service zuul restart``
 
 * ci slave node created failed
+
+  * NotFound: Floating ip pool not found. (HTTP 404) (Request-ID: req-dc5db0c4-7bfc-48a0-8fc6-85743d356c49)
+  
+    * Solution: add ``pool`` option in nodepool.yaml
+    * NOTE: This error only occurrs in early nodepool version, the lastest version has abandoned ``pool`` option.
+  
+  * SSHException: not a valid RSA private key file
+  
+    * Solution
+    The style of private key is wrong in common.yaml. 
+    Detailed info is introduced in Common.yaml Section.
+
+  * Exception: Timeout waiting for ssh access
+    
+    * Solution
+    The style of public key is wrong in common.yaml. 
+    Detailed info is introduced in Common.yaml Section.
+
 * slave node can not be registered in jenkins
-* slave node is outline in jenkins
-* job (such as dsvm-tempest-full) failed
+  
+  * Description: the started slave node can not be registered in Jenkins
+  * Detail
+    In general, once a slave node is started, it will be signed up to the node pool in the jenkins.
+    But in this case, there is only cimaster node detected in the node pool.
+
+  * TroubleShooting
+  During starting slave node, nodepool will call "createJenkinsNode" API to add slave nodes to Jenkins according to
+  ``targets:name`` config in nodepool.yaml. While the address of "Jenkins URL" is configured in secure.conf.
+  The reason for this error is the ``targets:name`` is not consistent with the ``{target_name}`` in secure.conf.
+
+  * Solution:
+  make the ``targets:name`` in nodepool.yaml and ``{target_name}`` in secure.conf consistent.
+
+  
+
+* slave node is in 'outline' state in Jenkins
+  
+  * Troubleshooting
+  Stare jenkins.jar failed in slave node, or lack jenkins.jar package
+  
+  * Solution
+  download jenkins.jar package manually and start it.
+  
+
+
 * zuul merge failed
 * /etc/resolv.conf is repeatly overridden
 * update ready-script failed
+
+  * Troubleshooting
+  mirror source is not stable, which lead to update image failed.
+
 * gerrit can not receive the result of 'verified -1'
+
+  * Troubleshooting
+  Lack 'verified' permission for project access
+  
 * git review failed
 * jenkins-jobs update failed
   
@@ -586,4 +657,34 @@ bugs are not listed in the following.
     * Solution
       create this template under ``/etc/jenkins-jobs/config/`` dir
   
-  * 
+  * Could not resolve host: git.openstack.org
+    
+    * Network is unavailable
+    
+  * Error in request. Possibly authentication failed [403]: Forbidden
+    
+    * Description: Modify projects.yaml and update jobs, failed
+    * Error Info
+  root@cimaster:/etc/jenkins_jobs/config# jenkins-jobs update --delete-old /etc/jenkins_jobs/config
+No handlers could be found for logger "jenkins_jobs.config"
+/usr/local/lib/python2.7/dist-packages/jenkins/__init__.py:644: DeprecationWarning: get_plugins_info() is deprecated, use get_plugins()
+  DeprecationWarning)
+Traceback (most recent call last):
+  File "/usr/local/bin/jenkins-jobs", line 10, in <module>
+    sys.exit(main())
+  File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 168, in main
+    jjb.execute()
+  File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 154, in execute
+    n_workers=options.n_workers)
+  File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 303, in update_jobs
+    self.parser = YamlParser(self.jjb_config, self.plugins_list)
+  File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 242, in plugins_list
+    self._plugins_list = self.jenkins.get_plugins_info()
+  File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 205, in get_plugins_info
+    raise e
+jenkins.JenkinsException: Error in request. Possibly authentication failed [403]: Forbidden
+
+    * Troubleshooting
+    * Solution
+    when update jobs, assign config file: jenkins-jobs.ini
+  
