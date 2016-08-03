@@ -533,6 +533,15 @@ bugs are not listed in the following.
 * database update failed
 * nodepool image-build failed
 * nodepool \** cmd no valid
+
+  * Description : all nodepool cmd is unavailable, and no logs
+  * Troubleshooting
+  Before nodepool run its cmd, the job corresponding to the cmd must be registered. It can be checked used by gearman.
+  If there are no registered jobs in Gearman, maybe, the reason is zuul service failed.
+  * Solution
+  check registered jobs : ``echo status| nc 127.0.0.1 4730 -w 1 ``
+  restart zuul service: ``service zuul-merger restart``; ``service zuul restart``
+
 * ci slave node created failed
 * slave node can not be registered in jenkins
 * slave node is outline in jenkins
@@ -576,3 +585,5 @@ bugs are not listed in the following.
       
     * Solution
       create this template under ``/etc/jenkins-jobs/config/`` dir
+  
+  * 
