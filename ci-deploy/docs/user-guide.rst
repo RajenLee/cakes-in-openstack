@@ -547,8 +547,7 @@ bugs are not listed in the following.
   
 * nodepool image-build failed
   
-  * NOTE
-  Most errors for image build failed, is caused by network. PLEASE MAKE SURE NETWORK IS NOT LIMITED.
+  * NOTE: Most errors for image build failed, is caused by network. PLEASE MAKE SURE NETWORK IS NOT LIMITED.
   
 
 * nodepool \** cmd no valid
@@ -565,18 +564,18 @@ bugs are not listed in the following.
 
 * ci slave node created failed
 
-  * NotFound: Floating ip pool not found. (HTTP 404) (Request-ID: req-dc5db0c4-7bfc-48a0-8fc6-85743d356c49)
+  * ``NotFound: Floating ip pool not found. (HTTP 404) (Request-ID: req-dc5db0c4-7bfc-48a0-8fc6-85743d356c49)``
   
     * Solution: add ``pool`` option in nodepool.yaml
     * NOTE: This error only occurrs in early nodepool version, the lastest version has abandoned ``pool`` option.
   
-  * SSHException: not a valid RSA private key file
+  * ``SSHException: not a valid RSA private key file``
   
     * Solution
     The style of private key is wrong in common.yaml. 
     Detailed info is introduced in Common.yaml Section.
 
-  * Exception: Timeout waiting for ssh access
+  * ``Exception: Timeout waiting for ssh access``
     
     * Solution
     The style of public key is wrong in common.yaml. 
@@ -585,7 +584,6 @@ bugs are not listed in the following.
 * slave node can not be registered in jenkins
   
   * Description: the started slave node can not be registered in Jenkins
-  * Detail
     In general, once a slave node is started, it will be signed up to the node pool in the jenkins.
     But in this case, there is only cimaster node detected in the node pool.
 
@@ -597,7 +595,6 @@ bugs are not listed in the following.
   * Solution:
   make the ``targets:name`` in nodepool.yaml and ``{target_name}`` in secure.conf consistent.
 
-  
 
 * slave node is in 'outline' state in Jenkins
   
@@ -606,11 +603,89 @@ bugs are not listed in the following.
   
   * Solution
   download jenkins.jar package manually and start it.
-  
 
 
 * zuul merge failed
+
+  * Description
+  When add a new change for project to trigger jobs, this error is occurred
+  
+  * Error info
+  ::
+    
+    2016-08-01 04:11:08,745 INFO zuul.MergeClient: Merge <gear.Job 0x7f0800119ed0 handle: H:127.0.0.1:35 name: merger:merge unique: a3891d60a231458f9b4a591053bd086d> complete, merged: False, updated: False, commit: None
+    2016-08-01 04:11:08,748 INFO zuul.IndependentPipelineManager: Unable to merge change <Change 0x7f08001b7090 76,12>
+    2016-08-01 04:11:08,749 INFO zuul.IndependentPipelineManager: Reporting item <QueueItem 0x7f0800113a90 for <Change 0x7f08001b7090 76,12> in check>, actions: [<zuul.reporter.gerrit.GerritReporter object at 0x7f0800163f90>]
+    2016-08-01 04:11:08,752 ERROR zuul.source.Gerrit: Exception looking for ref refs/heads/master
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/zuul/source/gerrit.py", line 49, in getRefSha
+        refs = self.connection.getInfoRefs(project)
+      File "/usr/local/lib/python2.7/dist-packages/zuul/connection/gerrit.py", line 391, in getInfoRefs
+        data = urllib.request.urlopen(url).read()
+      File "/usr/lib/python2.7/urllib2.py", line 127, in urlopen
+        return _opener.open(url, data, timeout)
+      File "/usr/lib/python2.7/urllib2.py", line 404, in open
+        response = self._open(req, data)
+      File "/usr/lib/python2.7/urllib2.py", line 422, in _open
+        '_open', req)
+      File "/usr/lib/python2.7/urllib2.py", line 382, in _call_chain
+        result = func(*args)
+      File "/usr/lib/python2.7/urllib2.py", line 1222, in https_open
+        return self.do_open(httplib.HTTPSConnection, req)
+      File "/usr/lib/python2.7/urllib2.py", line 1184, in do_open
+        raise URLError(err)
+    URLError: <urlopen error [Errno 111] Connection refused>
+
+  * Solution
+  use the link of clone with commit-msg hook to git clone repo.
+  ::
+  
+    #take "citest" repo for instance
+    cd /var/lib/zuul/git/
+    git clone ssh://green@10.63.243.3:29418/citest && scp -p -P 29418 green@10.63.243.3:hooks/commit-msg citest/.git/hooks/
+    
+  
 * /etc/resolv.conf is repeatly overridden
+
+  * Description: Although DNS has been added through calling ``ready-script``, the network is still unreachable.
+  * Error info
+  ::
+    
+    INFO:zuul.Cloner:Creating repo openstack/requirements from upstream git://git.openstack.org/openstack/requirements
+    07:25:04 ERROR:zuul.Repo:Unable to initialize repo for git://git.openstack.org/openstack/requirements
+    07:25:04 Traceback (most recent call last):
+    07:25:04   File "/usr/zuul-env/src/zuul/zuul/merger/merger.py", line 53, in __init__
+    07:25:04     self._ensure_cloned()
+    07:25:04   File "/usr/zuul-env/src/zuul/zuul/merger/merger.py", line 65, in _ensure_cloned
+    07:25:04     git.Repo.clone_from(self.remote_url, self.local_path)
+    07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/repo/base.py", line 965, in clone_from
+    07:25:04     return cls._clone(git, url, to_path, GitCmdObjectDB, progress, **kwargs)
+    07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/repo/base.py", line 911, in _clone
+    07:25:04     finalize_process(proc, stderr=stderr)
+    07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/util.py", line 155, in finalize_process
+    07:25:04     proc.wait(**kwargs)
+    07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/cmd.py", line 332, in wait
+    07:25:04     raise GitCommandError(self.args, status, errstr)
+    07:25:04 GitCommandError: 'git clone -v git://git.openstack.org/openstack/requirements /tmp/tmp.7cHqiTG4U9' returned with exit code 128
+    07:25:04 stderr: 'Cloning into '/tmp/tmp.7cHqiTG4U9'...
+    07:25:04 fatal: unable to connect to git.openstack.org:
+    07:25:04 git.openstack.org: Name or service not known
+  
+  * Troubleshooting
+  DhClient will delete all DNS when release expire. So if only modify the /etc/resolv.conf, it will out of 
+  operation after a release cycle. To resolve the issue, need to modify /sbin/dhclient-script which dhclient
+  will call when dhclient sets each interface's initial configuration. It will override the default behaviour
+  of the client in creating a /etc/resolv.conf file.
+  
+  * Solution
+  add the following code in the head of ``ready-script``
+  ::
+  
+    sudo sed -i -e '/mv -f $new_resolv_conf $resolv_conf/a\
+        echo "nameserver 172.10.0.1" >> $resolv_conf' /sbin/dhclient-script
+        
+  **NOTE** This is not the best solution. The DNS server should be dynamically pushed into /etc/resolv.conf file.
+
 * update ready-script failed
 
   * Troubleshooting
@@ -622,12 +697,27 @@ bugs are not listed in the following.
   Lack 'verified' permission for project access
   
 * git review failed
+  
+  * Description: Create a repo in gerrit and then git review a new change to gerrit, it's failed
+  * Error info
+  ::
+    
+    opnfv@cimaster:/tmp/ci$ git review
+    Errors running git rebase -i remotes/gerrit/master
+    fatal: Needed a single revision
+    invalid upstream remotes/gerrit/master
+  
+  * Solution
+  Lack master branch for project in gerrit.
+  According to 'set gerrit project access' subsection to create master branch.
+  
 * jenkins-jobs update failed
   
   * Failed to find suitable template named '###'
   
     * Description: jenkins-job update failed
-    * Detail : modify the jenkins jobs in the ./project-config/jenkins/jobs/projects.yaml, such as add/delete some project, and then execute `puppet apply`. The execution of `puppet apply` is failed and when running the 'jenkins-jobs update --delete-old /etc/jenkins_jobs/config` cmd, it fails too. 
+    modify the jenkins jobs in the ./project-config/jenkins/jobs/projects.yaml, such as add/delete some project, and then execute `puppet apply`. The execution of `puppet apply` is failed and when running the 'jenkins-jobs update --delete-old /etc/jenkins_jobs/config` cmd, it fails too. 
+    
     * Error Info
     ::
     
@@ -657,34 +747,37 @@ bugs are not listed in the following.
     * Solution
       create this template under ``/etc/jenkins-jobs/config/`` dir
   
-  * Could not resolve host: git.openstack.org
-    
-    * Network is unavailable
-    
   * Error in request. Possibly authentication failed [403]: Forbidden
     
     * Description: Modify projects.yaml and update jobs, failed
     * Error Info
-  root@cimaster:/etc/jenkins_jobs/config# jenkins-jobs update --delete-old /etc/jenkins_jobs/config
-No handlers could be found for logger "jenkins_jobs.config"
-/usr/local/lib/python2.7/dist-packages/jenkins/__init__.py:644: DeprecationWarning: get_plugins_info() is deprecated, use get_plugins()
-  DeprecationWarning)
-Traceback (most recent call last):
-  File "/usr/local/bin/jenkins-jobs", line 10, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 168, in main
-    jjb.execute()
-  File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 154, in execute
-    n_workers=options.n_workers)
-  File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 303, in update_jobs
-    self.parser = YamlParser(self.jjb_config, self.plugins_list)
-  File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 242, in plugins_list
-    self._plugins_list = self.jenkins.get_plugins_info()
-  File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 205, in get_plugins_info
-    raise e
-jenkins.JenkinsException: Error in request. Possibly authentication failed [403]: Forbidden
+    ::
+    
+      root@cimaster:/etc/jenkins_jobs/config# jenkins-jobs update --delete-old /etc/jenkins_jobs/config
+    No handlers could be found for logger "jenkins_jobs.config"
+    /usr/local/lib/python2.7/dist-packages/jenkins/__init__.py:644: DeprecationWarning: get_plugins_info() is deprecated, use get_plugins()
+      DeprecationWarning)
+    Traceback (most recent call last):
+      File "/usr/local/bin/jenkins-jobs", line 10, in <module>
+        sys.exit(main())
+      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 168, in main
+        jjb.execute()
+      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 154, in execute
+        n_workers=options.n_workers)
+      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 303, in update_jobs
+        self.parser = YamlParser(self.jjb_config, self.plugins_list)
+      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 242, in plugins_list
+        self._plugins_list = self.jenkins.get_plugins_info()
+      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 205, in get_plugins_info
+        raise e
+    jenkins.JenkinsException: Error in request. Possibly authentication failed [403]: Forbidden
 
     * Troubleshooting
     * Solution
     when update jobs, assign config file: jenkins-jobs.ini
   
+* jenkins jobs failed in slave node
+
+  * Could not resolve host: git.openstack.org
+    
+    * Network is unavailable
