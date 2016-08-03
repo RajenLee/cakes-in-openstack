@@ -442,11 +442,15 @@ Take "citest" project for instance.
 
 ``layout.yaml`` contains the rules of pipelines and which jobs will be triggered for a project.
 Besides, according to the open project, such as citest, in ``projects.yaml`` and jobs of this 
-project configured in ``layout.yaml`` , zuul service will registeres these jobs' name into gearman.
-
-``
+project configured in ``layout.yaml`` , zuul service will registers these jobs' name into gearman.
 
 
+``projects.yaml`` file defines all of the 
+
+
+**NOTE** Zuul does not construct Jenkins jobs. JJB does that. Zuul simply configures which Jenkins
+jobs should run for a project and a pipeline. Jenkins Job Builder translates YAML type of job
+templating rules to XML configuration, and then create Jenkins jobs.
 
 
 Common Command
