@@ -462,6 +462,20 @@ JJB reads other YAML file to parse job template and then creates jobs.
 jobs should run for a project and a pipeline. Jenkins Job Builder translates YAML type of job
 templating rules to XML configuration, and then create Jenkins jobs.
 
+After "citest" project configuration file prepared, use ``jenkins-jobs update`` command to
+update new jobs to Jenkins.
+
+If all jobs can be found in Jenkins brower and Gearman, "citest" jobs is configured successfully.
+
+Check whether new jobs are registered in Gearman
+::
+  
+  echo status | nc 127.0.0.1 4730 -w 1|grep citest
+  #result
+  opnfv@cimaster:~$ echo status | nc 127.0.0.1 4730 -w 1 |grep citest
+  build:citest-verified-flow:ubuntu-trusty	0	0	5
+  build:citest-verified-flow	0	0	5
+
 
 Common Command
 ==============
@@ -488,6 +502,11 @@ Common Command
   
   jenkins-jobs --conf /etc/jenkins_jobs/jenkins_jobs.ini update [--delete-old] /etc/jenkins_jobs/config
   jenkins-jobs delete-all
+
+* Gearman jobs
+::
+  
+  echo status | nc 127.0.0.1 4730 -w 1
 
 FAQ
 ====
