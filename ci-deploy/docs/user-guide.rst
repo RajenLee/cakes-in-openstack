@@ -469,7 +469,7 @@ update new jobs to Jenkins.
 
 If all jobs can be found in Jenkins brower and Gearman, "citest" jobs is configured successfully.
 
-Check whether new jobs are registered in Gearman
+**TIP** Check whether new jobs are registered in Gearman
 ::
   
   echo status | nc 127.0.0.1 4730 -w 1|grep citest
@@ -509,6 +509,9 @@ Common Command
 ::
   
   echo status | nc 127.0.0.1 4730 -w 1
+  # a skippet for result
+  # build:gate-horizon-selenium-headless	0	0	5
+  # build:gate-neutron-lbaas-dashboard-dsvm-integration	0	0	5
   
 
 The output of the status command contains tab separated columns with the following information.
