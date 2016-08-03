@@ -653,47 +653,6 @@ bugs are not listed in the following.
   * Solution
   download jenkins.jar package manually and start it.
 
-
-* zuul merge failed
-
-  * Description
-  When add a new change for project to trigger jobs, this error is occurred
-  
-  * Error info
-  ::
-    
-    2016-08-01 04:11:08,745 INFO zuul.MergeClient: Merge <gear.Job 0x7f0800119ed0 handle: H:127.0.0.1:35 name: merger:merge unique: a3891d60a231458f9b4a591053bd086d> complete, merged: False, updated: False, commit: None
-    2016-08-01 04:11:08,748 INFO zuul.IndependentPipelineManager: Unable to merge change <Change 0x7f08001b7090 76,12>
-    2016-08-01 04:11:08,749 INFO zuul.IndependentPipelineManager: Reporting item <QueueItem 0x7f0800113a90 for <Change 0x7f08001b7090 76,12> in check>, actions: [<zuul.reporter.gerrit.GerritReporter object at 0x7f0800163f90>]
-    2016-08-01 04:11:08,752 ERROR zuul.source.Gerrit: Exception looking for ref refs/heads/master
-    Traceback (most recent call last):
-      File "/usr/local/lib/python2.7/dist-packages/zuul/source/gerrit.py", line 49, in getRefSha
-        refs = self.connection.getInfoRefs(project)
-      File "/usr/local/lib/python2.7/dist-packages/zuul/connection/gerrit.py", line 391, in getInfoRefs
-        data = urllib.request.urlopen(url).read()
-      File "/usr/lib/python2.7/urllib2.py", line 127, in urlopen
-        return _opener.open(url, data, timeout)
-      File "/usr/lib/python2.7/urllib2.py", line 404, in open
-        response = self._open(req, data)
-      File "/usr/lib/python2.7/urllib2.py", line 422, in _open
-        '_open', req)
-      File "/usr/lib/python2.7/urllib2.py", line 382, in _call_chain
-        result = func(*args)
-      File "/usr/lib/python2.7/urllib2.py", line 1222, in https_open
-        return self.do_open(httplib.HTTPSConnection, req)
-      File "/usr/lib/python2.7/urllib2.py", line 1184, in do_open
-        raise URLError(err)
-    URLError: <urlopen error [Errno 111] Connection refused>
-
-  * Solution
-  use the link of clone with commit-msg hook to git clone repo.
-  ::
-  
-    #take "citest" repo for instance
-    cd /var/lib/zuul/git/
-    git clone ssh://green@10.63.243.3:29418/citest && scp -p -P 29418 green@10.63.243.3:hooks/commit-msg citest/.git/hooks/
-    
-
 * update ready-script failed
 
   * Troubleshooting
@@ -833,7 +792,47 @@ bugs are not listed in the following.
           
     **NOTE** This is not the best solution. The DNS server should be dynamically pushed into /etc/resolv.conf file.
 
-  * can not trigger jenkins jobs
+  * can not trigger jenkins jobs because of zuul merge failed
+  
+    * Description
+    When add a new change for project to trigger jobs, this error is occurred
+    
+    * Error info
+    ::
+      
+      2016-08-01 04:11:08,745 INFO zuul.MergeClient: Merge <gear.Job 0x7f0800119ed0 handle: H:127.0.0.1:35 name: merger:merge unique: a3891d60a231458f9b4a591053bd086d> complete, merged: False, updated: False, commit: None
+      2016-08-01 04:11:08,748 INFO zuul.IndependentPipelineManager: Unable to merge change <Change 0x7f08001b7090 76,12>
+      2016-08-01 04:11:08,749 INFO zuul.IndependentPipelineManager: Reporting item <QueueItem 0x7f0800113a90 for <Change 0x7f08001b7090 76,12> in check>, actions: [<zuul.reporter.gerrit.GerritReporter object at 0x7f0800163f90>]
+      2016-08-01 04:11:08,752 ERROR zuul.source.Gerrit: Exception looking for ref refs/heads/master
+      Traceback (most recent call last):
+        File "/usr/local/lib/python2.7/dist-packages/zuul/source/gerrit.py", line 49, in getRefSha
+          refs = self.connection.getInfoRefs(project)
+        File "/usr/local/lib/python2.7/dist-packages/zuul/connection/gerrit.py", line 391, in getInfoRefs
+          data = urllib.request.urlopen(url).read()
+        File "/usr/lib/python2.7/urllib2.py", line 127, in urlopen
+          return _opener.open(url, data, timeout)
+        File "/usr/lib/python2.7/urllib2.py", line 404, in open
+          response = self._open(req, data)
+        File "/usr/lib/python2.7/urllib2.py", line 422, in _open
+          '_open', req)
+        File "/usr/lib/python2.7/urllib2.py", line 382, in _call_chain
+          result = func(*args)
+        File "/usr/lib/python2.7/urllib2.py", line 1222, in https_open
+          return self.do_open(httplib.HTTPSConnection, req)
+        File "/usr/lib/python2.7/urllib2.py", line 1184, in do_open
+          raise URLError(err)
+      URLError: <urlopen error [Errno 111] Connection refused>
+  
+    * Solution
+    use the link of clone with commit-msg hook to git clone repo.
+    ::
+    
+      #take "citest" repo for instance
+      cd /var/lib/zuul/git/
+      git clone ssh://green@10.63.243.3:29418/citest && scp -p -P 29418 green@10.63.243.3:hooks/commit-msg citest/.git/hooks/
+    
+
+  * can not trigger jenkins jobs because of job not registered
     
     * Error Info
     ::
@@ -850,5 +849,5 @@ bugs are not listed in the following.
     Modify the style of jobs in ``layout.yaml``.
     Call ``jenkins-jobs update`` and  restart zuul service.
     
-    
+  
     
