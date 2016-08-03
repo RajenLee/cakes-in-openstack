@@ -693,47 +693,6 @@ bugs are not listed in the following.
     cd /var/lib/zuul/git/
     git clone ssh://green@10.63.243.3:29418/citest && scp -p -P 29418 green@10.63.243.3:hooks/commit-msg citest/.git/hooks/
     
-  
-* /etc/resolv.conf is repeatly overridden
-
-  * Description: Although DNS has been added through calling ``ready-script``, the network is still unreachable.
-  * Error info
-  ::
-    
-    INFO:zuul.Cloner:Creating repo openstack/requirements from upstream git://git.openstack.org/openstack/requirements
-    07:25:04 ERROR:zuul.Repo:Unable to initialize repo for git://git.openstack.org/openstack/requirements
-    07:25:04 Traceback (most recent call last):
-    07:25:04   File "/usr/zuul-env/src/zuul/zuul/merger/merger.py", line 53, in __init__
-    07:25:04     self._ensure_cloned()
-    07:25:04   File "/usr/zuul-env/src/zuul/zuul/merger/merger.py", line 65, in _ensure_cloned
-    07:25:04     git.Repo.clone_from(self.remote_url, self.local_path)
-    07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/repo/base.py", line 965, in clone_from
-    07:25:04     return cls._clone(git, url, to_path, GitCmdObjectDB, progress, **kwargs)
-    07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/repo/base.py", line 911, in _clone
-    07:25:04     finalize_process(proc, stderr=stderr)
-    07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/util.py", line 155, in finalize_process
-    07:25:04     proc.wait(**kwargs)
-    07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/cmd.py", line 332, in wait
-    07:25:04     raise GitCommandError(self.args, status, errstr)
-    07:25:04 GitCommandError: 'git clone -v git://git.openstack.org/openstack/requirements /tmp/tmp.7cHqiTG4U9' returned with exit code 128
-    07:25:04 stderr: 'Cloning into '/tmp/tmp.7cHqiTG4U9'...
-    07:25:04 fatal: unable to connect to git.openstack.org:
-    07:25:04 git.openstack.org: Name or service not known
-  
-  * Troubleshooting
-  DhClient will delete all DNS when release expire. So if only modify the /etc/resolv.conf, it will out of 
-  operation after a release cycle. To resolve the issue, need to modify /sbin/dhclient-script which dhclient
-  will call when dhclient sets each interface's initial configuration. It will override the default behaviour
-  of the client in creating a /etc/resolv.conf file.
-  
-  * Solution
-  add the following code in the head of ``ready-script``
-  ::
-  
-    sudo sed -i -e '/mv -f $new_resolv_conf $resolv_conf/a\
-        echo "nameserver 172.10.0.1" >> $resolv_conf' /sbin/dhclient-script
-        
-  **NOTE** This is not the best solution. The DNS server should be dynamically pushed into /etc/resolv.conf file.
 
 * update ready-script failed
 
@@ -822,6 +781,8 @@ bugs are not listed in the following.
       jenkins.JenkinsException: Error in request. Possibly authentication failed [403]: Forbidden
 
     * Troubleshooting
+    The Request object, used to get plugins info, is lack of cookies, which lead to be rejected.
+    
     * Solution
     when update jobs, assign config file: jenkins-jobs.ini
   
@@ -831,4 +792,63 @@ bugs are not listed in the following.
     
     * Network is unavailable
   
-  * 
+  * /etc/resolv.conf is repeatly overridden
+
+    * Description: Although DNS has been added through calling ``ready-script``, the network is still unreachable.
+    * Error info
+    ::
+      
+      INFO:zuul.Cloner:Creating repo openstack/requirements from upstream git://git.openstack.org/openstack/requirements
+      07:25:04 ERROR:zuul.Repo:Unable to initialize repo for git://git.openstack.org/openstack/requirements
+      07:25:04 Traceback (most recent call last):
+      07:25:04   File "/usr/zuul-env/src/zuul/zuul/merger/merger.py", line 53, in __init__
+      07:25:04     self._ensure_cloned()
+      07:25:04   File "/usr/zuul-env/src/zuul/zuul/merger/merger.py", line 65, in _ensure_cloned
+      07:25:04     git.Repo.clone_from(self.remote_url, self.local_path)
+      07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/repo/base.py", line 965, in clone_from
+      07:25:04     return cls._clone(git, url, to_path, GitCmdObjectDB, progress, **kwargs)
+      07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/repo/base.py", line 911, in _clone
+      07:25:04     finalize_process(proc, stderr=stderr)
+      07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/util.py", line 155, in finalize_process
+      07:25:04     proc.wait(**kwargs)
+      07:25:04   File "/usr/zuul-env/local/lib/python2.7/site-packages/git/cmd.py", line 332, in wait
+      07:25:04     raise GitCommandError(self.args, status, errstr)
+      07:25:04 GitCommandError: 'git clone -v git://git.openstack.org/openstack/requirements /tmp/tmp.7cHqiTG4U9' returned with exit code 128
+      07:25:04 stderr: 'Cloning into '/tmp/tmp.7cHqiTG4U9'...
+      07:25:04 fatal: unable to connect to git.openstack.org:
+      07:25:04 git.openstack.org: Name or service not known
+    
+    * Troubleshooting
+    DhClient will delete all DNS when release expire. So if only modify the /etc/resolv.conf, it will out of 
+    operation after a release cycle. To resolve the issue, need to modify /sbin/dhclient-script which dhclient
+    will call when dhclient sets each interface's initial configuration. It will override the default behaviour
+    of the client in creating a /etc/resolv.conf file.
+    
+    * Solution
+    add the following code in the head of ``ready-script``
+    ::
+    
+      sudo sed -i -e '/mv -f $new_resolv_conf $resolv_conf/a\
+          echo "nameserver 172.10.0.1" >> $resolv_conf' /sbin/dhclient-script
+          
+    **NOTE** This is not the best solution. The DNS server should be dynamically pushed into /etc/resolv.conf file.
+
+  * can not trigger jenkins jobs
+    
+    * Error Info
+    ::
+      
+      2016-08-01 10:18:55,007 ERROR zuul.Gearman: Job <gear.Job 0x7fad4ce77150 handle: None name: citest-verified-flow unique: 80879edb4ee64546a87efc63bdb2486a> is not registered with Gearman
+      2016-08-01 10:18:55,008 INFO zuul.Gearman: Build <gear.Job 0x7fad4ce77150 handle: None name: citest-verified-flow unique: 80879edb4ee64546a87efc63bdb2486a> complete, result NOT_REGISTERED
+    
+    * Troubleshooting
+    The job, citest-verified-flow, is not registered with Gearman. 
+    Gearman only registers jobs which are defined in ``/etc/zuul/layout/layout.yaml`` file.
+    Check whether the defination and style of jobs are right.
+    
+    * Solution
+    Modify the style of jobs in ``layout.yaml``.
+    Call ``jenkins-jobs update`` and  restart zuul service.
+    
+    
+    
