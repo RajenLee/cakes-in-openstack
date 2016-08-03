@@ -547,28 +547,32 @@ bugs are not listed in the following.
   * Failed to find suitable template named '###'
   
     * Description: jenkins-job update failed
-    * Detail : modify the jenkins jobs in the ./project-config/jenkins/jobs/projects.yaml, such as add/delete some project,
-and then execute `puppet apply`. The execution of `puppet apply` is failed and when running the 'jenkins-jobs
-update --delete-old /etc/jenkins_jobs/config` cmd, it fails too. 
+    * Detail : modify the jenkins jobs in the ./project-config/jenkins/jobs/projects.yaml, such as add/delete some project, and then execute `puppet apply`. The execution of `puppet apply` is failed and when running the 'jenkins-jobs update --delete-old /etc/jenkins_jobs/config` cmd, it fails too. 
     * Error Info
-root@cimaster:~# jenkins-jobs update --delete-old /etc/jenkins_jobs/config
-INFO:root:Updating jobs in ['/etc/jenkins_jobs/config'] ([])
-/usr/local/lib/python2.7/dist-packages/jenkins/_init_.py:644: DeprecationWarning: get_plugins_info() is deprecated, use get_plugins()
-DeprecationWarning)
-Traceback (most recent call last):
-File "/usr/local/bin/jenkins-jobs", line 10, in <module>
-sys.exit(main())
-File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 139, in main
-jjb.execute()
-File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 133, in execute
-jenkins_jobs.cmd.execute(self._options, self._config_file_values)
-File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cmd.py", line 269, in execute
-n_workers=options.n_workers)
-File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 349, in update_jobs
-self.parser.expandYaml(jobs_glob)
-File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/parser.py", line 266, in expandYaml
-.format(jobname))
-jenkins_jobs.errors.JenkinsJobsException: Failed to find suitable template named 'experimental-openstackci-beaker- {node}
-    * Troubleshooting
+    ::
     
+      root@cimaster:~# jenkins-jobs update --delete-old /etc/jenkins_jobs/config
+      INFO:root:Updating jobs in ['/etc/jenkins_jobs/config'] ([])
+      /usr/local/lib/python2.7/dist-packages/jenkins/_init_.py:644: DeprecationWarning: get_plugins_info() is deprecated, use get_plugins()
+      DeprecationWarning)
+      Traceback (most recent call last):
+      File "/usr/local/bin/jenkins-jobs", line 10, in <module>
+      sys.exit(main())
+      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 139, in main
+      jjb.execute()
+      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 133, in execute
+      jenkins_jobs.cmd.execute(self._options, self._config_file_values)
+      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cmd.py", line 269, in execute
+      n_workers=options.n_workers)
+      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 349, in update_jobs
+      self.parser.expandYaml(jobs_glob)
+      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/parser.py", line 266, in expandYaml
+      .format(jobname))
+      jenkins_jobs.errors.JenkinsJobsException: Failed to find suitable template named 'experimental-openstackci-beaker- {node}'
+      
+    * Troubleshooting
+      the template named 'experimental-openstackci-beaker- {node}' is defined in ``projects.yaml``, but not be defined in
+      YAML template file to explain what this template should do.
+      
     * Solution
+      create this template under ``/etc/jenkins-jobs/config/`` dir
