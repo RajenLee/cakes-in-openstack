@@ -562,7 +562,7 @@ bugs are not listed in the following.
   check registered jobs : ``echo status| nc 127.0.0.1 4730 -w 1 ``
   restart zuul service: ``service zuul-merger restart``; ``service zuul restart``
 
-* ci slave node created failed
+* launch ci slave node failed
 
   * ``NotFound: Floating ip pool not found. (HTTP 404) (Request-ID: req-dc5db0c4-7bfc-48a0-8fc6-85743d356c49)``
   
@@ -580,6 +580,55 @@ bugs are not listed in the following.
     * Solution
     The style of public key is wrong in common.yaml. 
     Detailed info is introduced in Common.yaml Section.
+  
+  * After slave VM started,nodepool fail to ssh to slave because of timout
+    
+    * Log Info
+    ::
+    
+      2016-07-03 21:03:46,284 ERROR nodepool.utils: Exception while testing ssh access:
+      Traceback (most recent call last):
+      File "/usr/local/lib/python2.7/dist-packages/nodepool/nodeutils.py", line 55, in ssh_connect
+      client = SSHClient(ip, username, **connect_kwargs)
+      File "/usr/local/lib/python2.7/dist-packages/nodepool/sshclient.py", line 30, in _init_
+      key_filename=key_filename)
+      File "/usr/local/lib/python2.7/dist-packages/paramiko/client.py", line 305, in connect
+      retry_on_signal(lambda: sock.connect(addr))
+      File "/usr/local/lib/python2.7/dist-packages/paramiko/util.py", line 270, in retry_on_signal
+      return function()
+      File "/usr/local/lib/python2.7/dist-packages/paramiko/client.py", line 305, in <lambda>
+      retry_on_signal(lambda: sock.connect(addr))
+      File "/usr/lib/python2.7/socket.py", line 224, in meth
+      return getattr(self._sock,name)(*args)
+      error: [Errno 110] Connection timed out
+    
+    * Troubleshooting
+      After starting a vm node, it need to download the Flow Table, but the speed of download
+      is very very slow, whose time is much larger than the "timeout" value. (the default value
+      of "timeout" is 60 seconds)
+    
+    * Solution
+      expand the ``timeout`` option in nodepool.yaml
+  
+  * Fail to start slave node because of binding failed to port
+    
+    * Error Info
+    ::
+      
+      OpenStackCloudException: ('Error in creating the server: Exceeded maximum number of retries. Exceeded max scheduling attempts 3 for instance 71140bf1-fa48-44f1-b73c-8511dce1da0c. Last exception: Binding failed for port 59b81292-e5d5-4b06-a8e0-55c2d8bd473a, please check neutron logs for more information.', {'server': Munch({'OS-EXT-STS:task_state': None, 'addresses': {}, 'image': {u'id': u'e8d04018-e586-478a-9437-4b97a5b05434'}
+      , 'networks': {}, 'OS-EXT-STS:vm_state': u'error', 'OS-EXT-SRV-ATTR:instance_name': u'instance-000003e5', 'OS-SRV-USG:launched_at': None, 'NAME_ATTR': 'name', 'flavor':
+      {u'id': u'4'}
+      , 'id': u'71140bf1-fa48-44f1-b73c-8511dce1da0c', 'cloud': 'defaults', 'user_id': u'28e38e4ec3064402b0c48249ef8587ba', 'OS-DCF:diskConfig': u'MANUAL', 'HUMAN_ID': True, 'accessIPv4': '', 'accessIPv6': '', 'public_v4': '', 'OS-EXT-STS:power_state': 0, 'OS-EXT-AZ:availability_zone': u'', 'config_drive': u'', 'status': u'ERROR', 'updated': u'2016-06-30T12:28:08Z', 'hostId': u'', 'OS-EXT-SRV-ATTR:host': None, 'OS-SRV-USG:terminated_at': None, 'key_name': None, 'public_v6': '', 'request_ids': [], 'private_v4': '', 'interface_ip': '', 'OS-EXT-SRV-ATTR:hypervisor_hostname': None, 'name': u'ubuntu-trusty-zte-RegionOne-1780', 'created': u'2016-06-30T12:25:02Z', 'fault':
+      {u'message': u'Exceeded maximum number of retries. Exceeded max scheduling attempts 3 for instance 71140bf1-fa48-44f1-b73c-8511dce1da0c. Last exception: Binding failed for port 59b81292-e5d5-4b06-a8e0-55c2d8bd473a, please check neutron logs for more information.', u'code': 500, u'details': u' File "/usr/lib/python2.7/dist-packages/nova/conductor/manager.py", line 393, in build_instances\n filter_properties, instances[0].uuid)\n File "/usr/lib/python2.7/dist-packages/nova/scheduler/utils.py", line 186, in populate_retry\n raise exception.MaxRetriesExceeded(reason=msg)\n', u'created': u'2016-06-30T12:28:08Z'}
+      , 'region': 'RegionOne', 'x_openstack_request_ids': [], 'os-extended-volumes:volumes_attached': [], 'volumes': [], 'tenant_id': u'056a9a90a90845dba5eb4fa8620c7907', 'metadata':
+      Unknown macro: {u'groups'}
+      , 'human_id': u'ubuntu-trusty-zte-regionone-1780'})}) 
+    
+    * Troubleshooting
+      When starting slave node, only need to config internal network config, no floating network.
+    
+    * Solution
+      Delete Floating Network config in nodepool.yaml.
 
 * slave node can not be registered in jenkins
   
@@ -754,23 +803,23 @@ bugs are not listed in the following.
     ::
     
       root@cimaster:/etc/jenkins_jobs/config# jenkins-jobs update --delete-old /etc/jenkins_jobs/config
-    No handlers could be found for logger "jenkins_jobs.config"
-    /usr/local/lib/python2.7/dist-packages/jenkins/__init__.py:644: DeprecationWarning: get_plugins_info() is deprecated, use get_plugins()
-      DeprecationWarning)
-    Traceback (most recent call last):
-      File "/usr/local/bin/jenkins-jobs", line 10, in <module>
-        sys.exit(main())
-      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 168, in main
-        jjb.execute()
-      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 154, in execute
-        n_workers=options.n_workers)
-      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 303, in update_jobs
-        self.parser = YamlParser(self.jjb_config, self.plugins_list)
-      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 242, in plugins_list
-        self._plugins_list = self.jenkins.get_plugins_info()
-      File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 205, in get_plugins_info
-        raise e
-    jenkins.JenkinsException: Error in request. Possibly authentication failed [403]: Forbidden
+      No handlers could be found for logger "jenkins_jobs.config"
+      /usr/local/lib/python2.7/dist-packages/jenkins/__init__.py:644: DeprecationWarning: get_plugins_info() is deprecated, use get_plugins()
+        DeprecationWarning)
+      Traceback (most recent call last):
+        File "/usr/local/bin/jenkins-jobs", line 10, in <module>
+          sys.exit(main())
+        File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 168, in main
+          jjb.execute()
+        File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/cli/entry.py", line 154, in execute
+          n_workers=options.n_workers)
+        File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 303, in update_jobs
+          self.parser = YamlParser(self.jjb_config, self.plugins_list)
+        File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 242, in plugins_list
+          self._plugins_list = self.jenkins.get_plugins_info()
+        File "/usr/local/lib/python2.7/dist-packages/jenkins_jobs/builder.py", line 205, in get_plugins_info
+          raise e
+      jenkins.JenkinsException: Error in request. Possibly authentication failed [403]: Forbidden
 
     * Troubleshooting
     * Solution
@@ -781,3 +830,5 @@ bugs are not listed in the following.
   * Could not resolve host: git.openstack.org
     
     * Network is unavailable
+  
+  * 
