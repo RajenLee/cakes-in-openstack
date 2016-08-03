@@ -510,10 +510,11 @@ Common Command
   
 
 The output of the status command contains tab separated columns with the following information.
-  * Name: The name of the job.
-  * Number in queue: The total number of jobs in the queue including the currently running ones (next column). 
-  * Number of jobs running: The total number of jobs currently running. 
-  * Number of capable workers: A maximum possible count of workers that can run this job. This number being zero is one reason zuul reports “NOT Registered”.
+
+  # Name: The name of the job.
+  # Number in queue: The total number of jobs in the queue including the currently running ones (next column). 
+  # Number of jobs running: The total number of jobs currently running. 
+  # Number of capable workers: A maximum possible count of workers that can run this job. This number being zero is one reason zuul reports “NOT Registered”.
 
 FAQ
 ====
