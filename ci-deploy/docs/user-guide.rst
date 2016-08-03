@@ -445,8 +445,18 @@ Besides, according to the open project, such as citest, in ``projects.yaml`` and
 project configured in ``layout.yaml`` , zuul service will registers these jobs' name into gearman.
 
 
-``projects.yaml`` file defines all of the 
+``projects.yaml`` file defines all of the Jenkins jobs for all projects. It is the entry for
+Jenkins Jobs Builder creating Jenkins jobs.
+While, the content of ``projects.yaml`` is just job templates, not the specific jobs.
+So which jobs are included in each template? and what does a specific job do?
 
+``citest.yaml`` introduces the defination of job template: {name}-verified-flow.
+One template, one ``job-template`` section. It includes a list of jobs or shell commands.
+
+In a word, JJB read the ``projects.yaml`` file to construct the set of all Jenkins jobs.
+For each project, it sees the “name” attribute of the project, and substitutes that name
+attribute value wherever it sees {name} in any of the jobs that are defined for that project.
+JJB reads other YAML file to parse job template and then creates jobs.
 
 **NOTE** Zuul does not construct Jenkins jobs. JJB does that. Zuul simply configures which Jenkins
 jobs should run for a project and a pipeline. Jenkins Job Builder translates YAML type of job
