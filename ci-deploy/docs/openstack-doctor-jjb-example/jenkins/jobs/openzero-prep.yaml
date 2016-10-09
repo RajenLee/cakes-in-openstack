@@ -1,0 +1,10 @@
+- builder:
+    name: zuul-pip-prep
+    builders:
+        - shell: |
+            #!/bin/bash -xe
+            cat << EOF | sudo tee /etc/pip.conf
+            [global]
+            index-url = https://pypi.python.org/simple
+            trusted-host = pypi.python.org
+            EOF

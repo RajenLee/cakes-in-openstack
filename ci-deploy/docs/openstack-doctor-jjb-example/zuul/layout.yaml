@@ -1,0 +1,10 @@
+projects:
+
+  - name: doctor
+    template:
+      - name: merge-check
+    check:
+      - doctor-verify
+    gate:
+      - doctor-verify
+

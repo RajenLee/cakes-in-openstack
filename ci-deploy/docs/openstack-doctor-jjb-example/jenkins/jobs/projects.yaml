@@ -1,0 +1,17 @@
+##
+##
+##
+#
+- project:
+    name: citest
+
+    jobs:
+      - '{name}-verified-flow'
+
+- project:
+    name: doctor
+    jobs:
+        - 'doctor-verify'
+
+
+

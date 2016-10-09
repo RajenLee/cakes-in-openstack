@@ -1,0 +1,8 @@
+- job-template:
+    name: 'doctor-verify'
+    node: 'ubuntu-trusty'
+
+    builders:
+        - zuul-git-prep
+        - zuul-pip-prep
+        - shell: "[ -e tests/run.sh ] && bash -n ./tests/run.sh"
